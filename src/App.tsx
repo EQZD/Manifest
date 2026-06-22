@@ -164,9 +164,13 @@ export default function App() {
       subject,
       htmlTemplate,
       scheduledAt,
-      excelFile,
+      contacts: parseResult.contacts.map(contact => ({
+        email: contact.email ?? "",
+        name: contact.name ?? "",
+        company: contact.company ?? "",
+      })),
     });
-
+    
     if (result.ok) {
       setStatus("success");
       setStatusMessage(result.message);

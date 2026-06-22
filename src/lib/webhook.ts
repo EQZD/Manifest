@@ -5,7 +5,7 @@ export interface DispatchPayload {
   subject: string;
   htmlTemplate: string;
   scheduledAt: string;
-  excelFile: File;
+  contacts: Array<{ email: string; name: string; company: string }>;
 }
 
 export interface DispatchResult {
@@ -18,39 +18,34 @@ export async function sendCampaignToWebhook(
   webhookUrl: string,
   payload: DispatchPayload,
 ): Promise<DispatchResult> {
-  const formData = new FormData();
-  formData.append("campaignName", payload.campaignName);
-  formData.append("subject", payload.subject);
-  formData.append("htmlTemplate", payload.htmlTemplate);
-  formData.append("scheduledDate", payload.scheduledAt);
-  formData.append("excelFile", payload.excelFile, payload.excelFile.name);
-
   try {
     const response = await fetch(webhookUrl, {
       method: "POST",
-      body: formData,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        campaignName: payload.campaignName,
+        subject: payload.subject,
+        htmlTemplate: payload.htmlTemplate,
+        scheduledDate: payload.scheduledAt,
+        contacts: payload.contacts, // массив { email, name, company }
+      }),
     });
 
     if (!response.ok) {
       return {
         ok: false,
         statusCode: response.status,
-        message: `n8n ответил с ошибкой ${response.status}. Проверьте webhook и попробуйте снова.`,
+        message: `n8n ответил с ошибкой ${response.status}.`,
       };
     }
 
-    return {
-      ok: true,
-      statusCode: response.status,
-      message: "Рассылка передана в n8n.",
-    };
+    return { ok: true, statusCode: response.status, message: "Рассылка передана в n8n." };
   } catch (error) {
     return {
       ok: false,
-      message:
-        error instanceof Error
-          ? `Не удалось связаться с webhook: ${error.message}`
-          : "Не удалось связаться с webhook.",
+      message: error instanceof Error
+        ? `Не удалось связаться с webhook: ${error.message}`
+        : "Не удалось связаться с webhook.",
     };
   }
 }
