@@ -6,6 +6,7 @@ export interface DispatchPayload {
   htmlTemplate: string;
   scheduledAt: string;
   contacts: Array<{ email: string; name: string; company: string }>;
+  senderEmail: string;
 }
 
 export interface DispatchResult {
@@ -27,7 +28,8 @@ export async function sendCampaignToWebhook(
         subject: payload.subject,
         htmlTemplate: payload.htmlTemplate,
         scheduledDate: payload.scheduledAt,
-        contacts: payload.contacts, // массив { email, name, company }
+        contacts: payload.contacts,
+        senderEmail: payload.senderEmail,
       }),
     });
 

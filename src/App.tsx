@@ -18,6 +18,7 @@ interface FormValues {
   scheduledDate: string;
   scheduledTime: string;
   webhookUrl: string;
+  senderEmail: string;
 }
 
 const SECTIONS = [
@@ -44,6 +45,7 @@ export default function App() {
       scheduledDate: "",
       scheduledTime: "",
       webhookUrl: "",
+      senderEmail: "",
     },
   });
 
@@ -60,6 +62,7 @@ export default function App() {
   const scheduledDate = watch("scheduledDate");
   const scheduledTime = watch("scheduledTime");
   const webhookUrl = watch("webhookUrl");
+  const senderEmail = watch("senderEmail");
 
   const templateVariables = useMemo(() => extractTemplateVariables(htmlTemplate), [htmlTemplate]);
 
@@ -164,6 +167,7 @@ export default function App() {
       subject,
       htmlTemplate,
       scheduledAt,
+      senderEmail, 
       contacts: parseResult.contacts.map(contact => ({
         email: contact.email ?? "",
         name: contact.name ?? "",
@@ -248,6 +252,23 @@ export default function App() {
                     <p className="mt-1 text-xs text-[var(--color-err)]">Укажите тему письма</p>
                   )}
                 </div>
+              </div>
+
+              
+              <div className="mt-4">
+                <label className="field-label mb-1.5 block" htmlFor="senderEmail">
+                  Ваш email (отправитель)
+                </label>
+                <input
+                  id="senderEmail"
+                  type="email"
+                  className={`manifest-input ${errors.senderEmail ? "has-error" : ""}`}
+                  placeholder="your@gmail.com"
+                  {...register("senderEmail", { required: true })}
+                />
+                {touchedFields.senderEmail && errors.senderEmail && (
+                  <p className="mt-1 text-xs text-[var(--color-err)]">Укажите email отправителя</p>
+                )}
               </div>
             </SectionFrame>
 
