@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-paper: #faf9f6;
+  --color-paper-dim: #f1efe9;
+  --color-ink: #1f2d3d;
+  --color-ink-soft: #44525f;
+  --color-muted: #6b7280;
+  --color-line: #e2dfd6;
+  --color-line-strong: #c9c5b8;
+  --color-stamp: #ff5a36;
+  --color-stamp-dim: #ffe6dc;
+  --color-stamp-dark: #b5391f;
+  --color-ok: #2e7d4f;
+  --color-ok-bg: #e7f3ec;
+  --color-err: #c4392f;
+  --color-err-bg: #fbeae8;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-stamp-dim);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-stamp);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .field-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+  }
+
+  .manifest-input {
+    width: 100%;
+    border: 1px solid var(--color-line);
+    background-color: white;
+    color: var(--color-ink);
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9375rem;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+
+  .manifest-input:hover {
+    border-color: var(--color-line-strong);
+  }
+
+  .manifest-input:focus {
+    outline: none;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 3px rgba(31, 45, 61, 0.08);
+  }
+
+  .manifest-input.has-error {
+    border-color: var(--color-err);
+  }
+
+  .manifest-input.has-error:focus {
+    box-shadow: 0 0 0 3px rgba(196, 57, 47, 0.1);
+  }
+
+  .manifest-input::placeholder {
+    color: #8b8a82;
+  }
+}
+
+@layer base {
+  .token.tag,
+  .token.punctuation {
+    color: #ff9f7a;
+  }
+  .token.attr-name {
+    color: #8fd0ff;
+  }
+  .token.attr-value,
+  .token.string {
+    color: #b6e89c;
+  }
+  .token.comment {
+    color: #7a8a99;
+  }
+  .token.doctype {
+    color: #7a8a99;
+  }
+}
